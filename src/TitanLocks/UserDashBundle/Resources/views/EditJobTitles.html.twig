@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>TitanLocks - Edit Job Titles</title>
+    {{ include('@Brain/Resources/Defaults/Head.html.twig') }}
+</head>
+<body>
+{{ include('@Brain/Resources/Defaults/UserNavBar.html.twig') }}
+
+<!-- content -->
+<div id="content" class="app-content box-shadow-z0" role="main">
+    {{ include('@Brain/Resources/Defaults/Footer.html.twig') }}
+    <div ui-view class="app-body" id="view">
+        <div class="p-a white lt box-shadow">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="row">
+                        <a data-toggle="modal" data-target="#aside" class="navbar-item pull-left hidden-lg-up" style="padding-top: 3px;"><i class="material-icons"></i></a>
+                        <h4 class="mb-0 _300" style="padding-left: 10px;">Edit Job Title</h4>
+                        <button style="padding-left: 5px;padding-right: 5px;margin-left: 10px;">
+                            <a href="{{ path('dashboard/manage/jobtitles') }}">Back</a></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="padding ng-scope">
+            {% for flashMessage in app.session.flashbag.get('success') %}
+                <div class="alert alert-success" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <span class="">{{ flashMessage }}</span>
+                </div>
+            {% endfor %}
+            {% for flashMessage in app.session.flashbag.get('warning') %}
+                <div class="alert alert-warning" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    {{ flashMessage }}
+                </div>
+            {% endfor %}
+            {% for flashMessage in app.session.flashbag.get('error') %}
+                <div class="alert alert-danger" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    {{ flashMessage }}
+                </div>
+            {% endfor %}
+            {% if app.request.get('error') is defined and app.request.get('error')|length > 0 %}
+                <div class="alert alert-danger" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    {{ app.request.get('error') }}
+                </div>
+            {% endif %}
+            {% if app.request.get('warning') is defined and app.request.get('warning')|length > 0 %}
+                <div class="alert alert-danger" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    {{ app.request.get('warning') }}
+                </div>
+            {% endif %}
+            {% if app.request.get('success') is defined and app.request.get('success')|length > 0 %}
+                <div class="alert alert-danger" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    {{ app.request.get('success') }}
+                </div>
+            {% endif %}
+            {% if success is defined and success|length > 0 %}
+                <div class="alert alert-success" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    {{ success }}
+                </div>
+            {% endif %}
+            {% if warning is defined and warning|length > 0 %}
+                <div class="alert alert-warning" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    {{ warning }}
+                </div>
+            {% endif %}
+            {% if error is defined and error|length > 0 %}
+                <div class="alert alert-danger" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    {{ error }}
+                </div>
+            {% endif %}
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="box">
+                        <div class="box-header">
+                            <h2><b>Job title:</b> {{ jobTitle }}:</h2>
+                        </div>
+                        <div class="box-divider m-a-0"></div>
+                        <div class="box-body">
+
+                            <form method="post" role="form" class="ng-pristine ng-valid">
+                                <div class="form-group"><label for="exampleInputPassword1">Job title name:</label><input
+                                            type="text" name="jobTitleNameEdit" class="form-control"
+                                            id="exampleInputPassword1"
+                                            placeholder="Job title name"
+                                            value="{{ jobTitle }}">
+                                    <input type="text" name="jobTitleOldName" value="{{ jobTitle }}" style="display: none;">
+                                </div>
+                                <div class="form-group row" style="padding-left: 12px;">
+                                    {% if features[0] == true %}
+                                        <input type="checkbox"
+                                               name="createUsersFeature"
+                                               id="createUsersFeature"
+                                               checked>
+                                    {% else %}
+                                        <input type="checkbox"
+                                               name="createUsersFeature"
+                                               id="createUsersFeature"
+                                        >
+                                    {% endif %}
+                                    <label
+                                            style="padding-left:10px;" for="createUsersFeature">Create users</label>
+                                    <div class="form-group pull-right"
+                                         style="padding-left: 40px;">
+                                        {% if features[1] == true %}
+                                    <input type="checkbox"
+                                           name="editUsers"
+                                           id="editUsers"
+                                           checked>
+                                    {% else %}
+                                        <input type="checkbox"
+                                               name="editUsers"
+                                               id="editUsers"
+                                        >
+                                        {% endif %}<label style="padding-left:10px;"
+                                                          for="editUsers">Edit users</label>
+                                    </div>
+                                    <div class="form-group pull-right"
+                                         style="padding-left: 55px;">                                        {% if features[2] == true %}
+                                    <input type="checkbox"
+                                           name="deleteUsers"
+                                           id="deleteUsers"
+                                           checked>
+                                    {% else %}
+                                        <input type="checkbox"
+                                               name="deleteUsers"
+                                               id="deleteUsers"
+                                        >
+                                        {% endif %}<label
+                                                style="padding-left:10px;"
+                                                for="deleteUsers">Delete
+                                            users</label>
+                                    </div>
+                                </div>
+                                <div class="form-group row" style="padding-left: 12px;">
+                                    {% if features[3] == true %}
+                                <input type="checkbox"
+                                       name="addLocksFeature"
+                                       id="addLocksFeature"
+                                       checked>
+                                {% else %}
+                                    <input type="checkbox"
+                                           name="addLocksFeature"
+                                           id="addLocksFeature"
+                                    >
+                                    {% endif %}<label
+                                            style="padding-left:10px;" for="addLocksFeature">Add locks</label>
+                                    <div class="form-group pull-right" style="padding-left: 60px;">
+                                        {% if features[4] == true %}
+                                    <input type="checkbox"
+                                           name="editLocksFeature"
+                                           id="editLocksFeature"
+                                           checked>
+                                    {% else %}
+                                        <input type="checkbox"
+                                               name="editLocksFeature"
+                                               id="editLocksFeature"
+                                        >
+                                        {% endif %}<label
+                                                style="padding-left:10px;"
+                                                for="editLocksFeature">Edit
+                                            locks</label>
+                                    </div>
+                                    <div class="form-group pull-right" style="padding-left: 55px;">
+                                        {% if features[5] == true %}
+                                    <input type="checkbox"
+                                           name="deleteLocksFeature"
+                                           id="deleteLocksFeature"
+                                           checked>
+                                    {% else %}
+                                        <input type="checkbox"
+                                               name="deleteLocksFeature"
+                                               id="deleteLocksFeature"
+                                        >
+                                        {% endif %}<label
+                                                style="padding-left:10px;" for="deleteLocksFeature">Delete locks</label>
+                                    </div>
+                                </div>
+                                <div class="form-group row" style="padding-left: 12px;">
+                                    {% if features[6] == true %}
+                                <input type="checkbox"
+                                       name="addEkeyFeature"
+                                       id="addEkeyFeature"
+                                       checked>
+                                {% else %}
+                                    <input type="checkbox"
+                                           name="addEkeyFeature"
+                                           id="addEkeyFeature"
+                                    >
+                                    {% endif %}<label
+                                            style="padding-left:10px;" for="addEkeyFeature">Add Ekeys</label>
+                                    <div class="form-group pull-right" style="padding-left: 55px;">
+                                        {% if features[7] == true %}
+                                    <input type="checkbox"
+                                           name="editEkeyFeature"
+                                           id="editEkeyFeature"
+                                           checked>
+                                    {% else %}
+                                        <input type="checkbox"
+                                               name="editEkeyFeature"
+                                               id="editEkeyFeature"
+                                        >
+                                        {% endif %}<label
+                                                style="padding-left:10px;"
+                                                for="editEkeyFeature">Edit
+                                            ekey</label>
+                                    </div>
+                                    <div class="form-group pull-right" style="padding-left: 55px;">
+                                        {% if features[8] == true %}
+                                    <input type="checkbox"
+                                           name="deleteEkeyFeature"
+                                           id="deleteEkeyFeature"
+                                           checked>
+                                    {% else %}
+                                        <input type="checkbox"
+                                               name="deleteEkeyFeature"
+                                               id="deleteEkeyFeature"
+                                        >
+                                        {% endif %}<label
+                                                style="padding-left:10px;"
+                                                for="deleteEkeyFeature">Delete
+                                            ekey</label>
+                                    </div>
+                                </div>
+                                <div class="form-group row" style="padding-left: 12px;">
+                                    {% if features[9] == true %}
+                                <input type="checkbox"
+                                       name="addPasscodesFeature"
+                                       id="addPasscodesFeature"
+                                       checked>
+                                {% else %}
+                                    <input type="checkbox"
+                                           name="addPasscodesFeature"
+                                           id="addPasscodesFeature"
+                                    >
+                                    {% endif %}<label
+                                            style="padding-left:10px;" for="addPasscodesFeature">Add
+                                        Passcodes</label>
+                                    <div class="form-group pull-right" style="padding-left: 25px;">
+                                        {% if features[10] == true %}
+                                    <input type="checkbox"
+                                           name="editPasscodeFeature"
+                                           id="editPasscodeFeature"
+                                           checked>
+                                    {% else %}
+                                        <input type="checkbox"
+                                               name="editPasscodeFeature"
+                                               id="editPasscodeFeature"
+                                        >
+                                        {% endif %}<label
+                                                style="padding-left:10px;" for="editPasscodeFeature">Edit
+                                            passcode</label>
+                                    </div>
+                                    <div class="form-group pull-right" style="padding-left: 25px;">
+                                        {% if features[11] == true %}
+                                    <input type="checkbox"
+                                           name="deletePasscodeFeature"
+                                           id="deletePasscodeFeature"
+                                           checked>
+                                    {% else %}
+                                        <input type="checkbox"
+                                               name="deletePasscodeFeature"
+                                               id="deletePasscodeFeature"
+                                        >
+                                        {% endif %}<label
+                                                style="padding-left:10px;" for="deletePasscodeFeature">Delete
+                                            passcode</label>
+                                    </div>
+                                </div>
+                                <div class="form-group row" style="padding-left: 12px;">
+                                    {% if features[12] == true %}
+                                <input type="checkbox"
+                                       name="manageLocationsFeature"
+                                       id="manageLocationsFeature"
+                                       checked>
+                                {% else %}
+                                    <input type="checkbox"
+                                           name="manageLocationsFeature"
+                                           id="manageLocationsFeature"
+                                    >
+                                    {% endif %}<label
+                                            style="padding-left:10px;" for="manageLocationsFeature">Manage
+                                        locations</label>
+                                    <div class="form-group pull-right" style="padding-left: 13px;">
+                                        {% if features[13] == true %}
+                                    <input type="checkbox"
+                                           name="manageJobTitles"
+                                           id="manageJobTitles"
+                                           checked>
+                                    {% else %}
+                                        <input type="checkbox"
+                                               name="manageJobTitles"
+                                               id="manageJobTitles"
+                                        >
+                                        {% endif %}<label
+                                                style="padding-left:10px;" for="manageJobTitles">Manage job
+                                            titles</label>
+                                    </div>
+                                    <div class="form-group row" style="padding-left: 19px;">
+                                        {% if features[14] == true %}
+                                    <input type="checkbox"
+                                           name="manageMaintenanceFeature"
+                                           id="manageMaintenanceFeature"
+                                           checked>
+                                    {% else %}
+                                        <input type="checkbox"
+                                               name="manageMaintenanceFeature"
+                                               id="manageMaintenanceFeature"
+                                        >
+                                        {% endif %}<label
+                                                style="padding-left:10px;" for="manageMaintenanceFeature">Manage
+                                            maintenance</label>
+                                    </div>
+                                </div>
+                                <div class="form-group row" style="padding-left: 12px;">
+                                    {% if features[15] == true %}
+                                <input type="checkbox"
+                                       name="maintenanceFeature"
+                                       id="maintenanceFeature"
+                                       checked>
+                                {% else %}
+                                    <input type="checkbox"
+                                           name="maintenanceFeature"
+                                           id="maintenanceFeature"
+                                    >
+                                    {% endif %}<label
+                                            style="padding-left:10px;" for="maintenanceFeature">Maintenance</label>
+                                    <div class="form-group pull-right" style="padding-left: 43px;">
+                                        {% if features[16] == true %}
+                                    <input type="checkbox"
+                                           name="viewUnlockRecords"
+                                           id="viewUnlockRecords"
+                                           checked>
+                                    {% else %}
+                                        <input type="checkbox"
+                                               name="viewUnlockRecords"
+                                               id="viewUnlockRecords"
+                                        >
+                                        {% endif %}<label
+                                                style="padding-left:10px;" for="viewUnlockRecords">View unlock records</label>
+                                    </div>
+                                </div>
+                                <button type="submit" style="padding-left: 10px;padding-right: 10px;height: 30px;">
+                                    Edit
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ############ PAGE END-->
+
+</div>
+</div>
+</div>
+{{ include('@Brain/Resources/Defaults/FooterIncludes.html.twig') }}
+</body>
+</html>

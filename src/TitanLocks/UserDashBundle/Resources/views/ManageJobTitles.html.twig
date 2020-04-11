@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>TitanLocks - Manage Job Titles</title>
+    {{ include('@Brain/Resources/Defaults/Head.html.twig') }}
+</head>
+<body>
+{{ include('@Brain/Resources/Defaults/UserNavBar.html.twig') }}
+
+<!-- content -->
+<div id="content" class="app-content box-shadow-z0" role="main">
+    {{ include('@Brain/Resources/Defaults/Footer.html.twig') }}
+    <div ui-view class="app-body" id="view">
+        <div class="p-a white lt box-shadow">
+            <div class="row">
+                <a data-toggle="modal" data-target="#aside" class="navbar-item pull-left hidden-lg-up" style="padding-top: 3px;"><i class="material-icons"></i></a>
+                <div class="col-sm-6">
+                    <h4 class="mb-0 _300">Manage Job Titles</h4>
+                </div>
+            </div>
+        </div>
+        <div class="padding ng-scope">
+            {% for flashMessage in app.session.flashbag.get('success') %}
+                <div class="alert alert-success" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <span class="">{{ flashMessage }}</span>
+                </div>
+            {% endfor %}
+            {% for flashMessage in app.session.flashbag.get('warning') %}
+                <div class="alert alert-warning" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    {{ flashMessage }}
+                </div>
+            {% endfor %}
+            {% for flashMessage in app.session.flashbag.get('error') %}
+                <div class="alert alert-danger" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    {{ flashMessage }}
+                </div>
+            {% endfor %}
+            {% if app.request.get('error') is defined and app.request.get('error')|length > 0 %}
+                <div class="alert alert-danger" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    {{ app.request.get('error') }}
+                </div>
+            {% endif %}
+            {% if app.request.get('warning') is defined and app.request.get('warning')|length > 0 %}
+                <div class="alert alert-danger" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    {{ app.request.get('warning') }}
+                </div>
+            {% endif %}
+            {% if app.request.get('success') is defined and app.request.get('success')|length > 0 %}
+                <div class="alert alert-danger" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    {{ app.request.get('success') }}
+                </div>
+            {% endif %}
+            {% if success is defined and success|length > 0 %}
+                <div class="alert alert-success" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    {{ success }}
+                </div>
+            {% endif %}
+            {% if warning is defined and warning|length > 0 %}
+                <div class="alert alert-warning" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    {{ warning }}
+                </div>
+            {% endif %}
+            {% if error is defined and error|length > 0 %}
+                <div class="alert alert-danger" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    {{ error }}
+                </div>
+            {% endif %}
+            {% if jobFeatures[13] == true %}
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="box">
+                        <div class="box-header">
+                            <h2>Create new job title</h2>
+                            <small>Job titles are used to allow admins to quick create users accounts, they allow you to
+                                group together permissions into common job title names so you can select the job title
+                                name instead of
+                                selecting all the permissions every time creating a user account. Users that you create
+                                and have the " Create Users " feature will only be able to create users and give the
+                                permissions they have,
+                                they cannot give users created under their account any features they don't have.<b style="color: black;">Scroll down for feature descriptions of what every feature does</b>
+                            </small>
+                        </div>
+                        <div class="box-divider m-a-0"></div>
+                        <div class="box-body">
+
+                            <form method="post" role="form" class="ng-pristine ng-valid">
+                                <div class="form-group"><label for="exampleInputPassword1">Job title name:</label><input
+                                            type="text" name="jobTitleName" class="form-control"
+                                            id="exampleInputPassword1"
+                                            placeholder="Job title name"></div>
+                                <div class="form-group row" style="padding-left: 12px;"><input type="checkbox"
+                                                                                               name="createUsersFeature"
+                                                                                               id="createUsersFeature"><label
+                                            style="padding-left:10px;" for="createUsersFeature">Create users</label>
+                                    <div class="form-group pull-right" style="padding-left: 40px;"><input
+                                                type="checkbox" name="editUsers" id="editUsers"><label style="padding-left:10px;"
+                                                                                      for="editUsers">Edit users</label>
+                                    </div>
+                                    <div class="form-group pull-right" style="padding-left: 55px;"><input
+                                                type="checkbox" name="deleteUsers" id="deleteUsers"><label style="padding-left:10px;"
+                                                                                        for="deleteUsers">Delete
+                                            users</label>
+                                    </div>
+                                </div>
+                                <div class="form-group row" style="padding-left: 12px;"><input type="checkbox"
+                                                                                               name="addLocksFeature"
+                                                                                               id="addLocksFeature"><label
+                                            style="padding-left:10px;" for="addLocksFeature">Add locks</label>
+                                    <div class="form-group pull-right" style="padding-left: 60px;"><input
+                                                type="checkbox" name="editLocksFeature" id="editLocksFeature"><label style="padding-left:10px;"
+                                                                                             for="editLocksFeature">Edit
+                                            locks</label>
+                                    </div>
+                                    <div class="form-group pull-right" style="padding-left: 55px;"><input
+                                                type="checkbox"
+                                                name="deleteLocksFeature"
+                                                id="deleteLocksFeature"><label
+                                                style="padding-left:10px;" for="deleteLocksFeature">Delete locks</label>
+                                    </div>
+                                </div>
+                                <div class="form-group row" style="padding-left: 12px;"><input type="checkbox"
+                                                                                               name="addEkeyFeature"
+                                                                                               id="addEkeyFeature"><label
+                                            style="padding-left:10px;" for="addEkeyFeature">Add Ekeys</label>
+                                    <div class="form-group pull-right" style="padding-left: 55px;"><input
+                                                type="checkbox" name="editEkeyFeature" id="editEkeyFeature"><label style="padding-left:10px;"
+                                                                                           for="editEkeyFeature">Edit
+                                            ekey</label>
+                                    </div>
+                                    <div class="form-group pull-right" style="padding-left: 55px;"><input
+                                                type="checkbox" name="deleteEkeyFeature" id="deleteEkeyFeature"><label style="padding-left:10px;"
+                                                                                              for="deleteEkeyFeature">Delete
+                                            ekey</label>
+                                    </div>
+                                </div>
+                                <div class="form-group row" style="padding-left: 12px;"><input type="checkbox"
+                                                                                               name="addPasscodesFeature"
+                                                                                               id="addPasscodesFeature"><label
+                                            style="padding-left:10px;" for="addPasscodesFeature">Add
+                                        Passcodes</label>
+                                    <div class="form-group pull-right" style="padding-left: 25px;"><input
+                                                type="checkbox" name="editPasscodeFeature" id="editPasscodeFeature"><label
+                                                style="padding-left:10px;" for="editPasscodeFeature">Edit passcode</label>
+                                    </div>
+                                    <div class="form-group pull-right" style="padding-left: 25px;"><input
+                                                type="checkbox" name="deletePasscodeFeature" id="deletePasscodeFeature"><label
+                                                style="padding-left:10px;" for="deletePasscodeFeature">Delete
+                                            passcode</label>
+                                    </div>
+                                </div>
+                                <div class="form-group row" style="padding-left: 12px;"><input type="checkbox"
+                                                                                               name="manageLocationsFeature"
+                                                                                               id="manageLocationsFeature"><label
+                                            style="padding-left:10px;" for="manageLocationsFeature">Manage locations</label>
+                                    <div class="form-group pull-right" style="padding-left: 13px;"><input
+                                                type="checkbox" name="manageJobTitles" id="manageJobTitles"><label
+                                                style="padding-left:10px;" for="manageJobTitles">Manage job titles</label>
+                                    </div>
+                                    <div class="form-group row" style="padding-left: 19px;"><input type="checkbox"
+                                                                                                   name="manageMaintenanceFeature"
+                                                                                                   id="manageMaintenanceFeature"><label
+                                                style="padding-left:10px;" for="manageMaintenanceFeature">Manage maintenance</label>
+                                    </div>
+                                </div>
+                                <div class="form-group row" style="padding-left: 12px;"><input type="checkbox"
+                                                                                               name="maintenanceFeature"
+                                                                                               id="maintenanceFeature"><label
+                                            style="padding-left:10px;" for="maintenanceFeature">Maintenance</label>
+                                    <div class="form-group pull-right" style="padding-left: 43px;"><input
+                                                type="checkbox" name="viewUnlockRecords" id="viewUnlockRecords"><label
+                                                style="padding-left:10px;" for="viewUnlockRecords">View unlock records</label>
+                                    </div>
+                                </div>
+                                <button type="submit" style="padding-left: 10px;padding-right: 10px;height: 30px;">
+                                    Create
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="box">
+                        <div class="box-header">
+                            <h2>Edit job titles</h2>
+                            <small>Click on the below job title to be taken to the edit screen
+                            </small>
+                            <div class="box-divider m-a-0" style="padding-top: 10px;"></div>
+                        </div>
+                        <div class="box-body">
+                            {% for jobTitle in jobTitles %}
+                                <form method="post" >
+                                    <div style="padding-top: 10px">
+                                    <h6><b>{{ jobTitle }}</b><button type="submit" onclick="return confirm('Are you sure you want to delete job title \''+this.id+'\'');" name="delete" value="{{ jobTitle }}" class="delete pull-right" id="{{ jobTitle }}">Delete</button>
+                                        <button style="margin-right: 10px;" class="pull-right"><a href="{{ path('dashboard/manage/jobtitles', {'jobTitleName': jobTitle}) }}">Edit</a></button></h6>
+                                        <div class="box-divider m-a-0"></div>
+                                    </div>
+                                </form>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div class="box">
+                        <div class="box-header"><h2>Feature Descriptions</h2>
+                            <small>Descriptions of all features and what they do</small>
+                        </div>
+                        <div class="box-divider m-a-0"></div>
+                        <div class="box-body p-v-md">
+                            <div class="row row-sm">
+                                <div class="col-md-4">
+                                    <span><b>Create users:</b></span>
+                                    <br>
+                                    <small>place holder text, place holder text.place holder text, place holder text.place holder text, place holder text.</small>
+                                </div>
+                                <div class="col-md-4">
+                                    <span><b>Edit users:</b></span>
+                                    <br>
+                                    <small>place holder text, place holder text.place holder text, place holder text.place holder text, place holder text.</small>
+                                </div>
+                                <div class="col-md-4">
+                                    <span><b>Delete users:</b></span>
+                                    <br>
+                                    <small>place holder text, place holder text.place holder text, place holder text.place holder text, place holder text.</small>
+                                </div>
+                                <div class="col-md-4" style="padding-top: 20px;">
+                                    <span><b>Add locks:</b></span>
+                                    <br>
+                                    <small>place holder text, place holder text.place holder text, place holder text.place holder text, place holder text.</small>
+                                </div>
+                                <div class="col-md-4" style="padding-top: 20px;">
+                                    <span><b>Edit locks:</b></span>
+                                    <br>
+                                    <small>place holder text, place holder text.place holder text, place holder text.place holder text, place holder text.</small>
+                                </div>
+                                <div class="col-md-4" style="padding-top: 20px;">
+                                    <span><b>Delete locks:</b></span>
+                                    <br>
+                                    <small>place holder text, place holder text.place holder text, place holder text.place holder text, place holder text.</small>
+                                </div>
+                                <div class="col-md-4" style="padding-top: 20px;">
+                                    <span><b>Add Ekeys:</b></span>
+                                    <br>
+                                    <small>place holder text, place holder text.place holder text, place holder text.place holder text, place holder text.</small>
+                                </div>
+                                <div class="col-md-4" style="padding-top: 20px;">
+                                    <span><b>Edit Ekeys:</b></span>
+                                    <br>
+                                    <small>place holder text, place holder text.place holder text, place holder text.place holder text, place holder text.</small>
+                                </div>
+                                <div class="col-md-4" style="padding-top: 20px;">
+                                    <span><b>Delete Ekeys:</b></span>
+                                    <br>
+                                    <small>place holder text, place holder text.place holder text, place holder text.place holder text, place holder text.</small>
+                                </div>
+                                <div class="col-md-4" style="padding-top: 20px;">
+                                    <span><b>Add passcodes:</b></span>
+                                    <br>
+                                    <small>place holder text, place holder text.place holder text, place holder text.place holder text, place holder text.</small>
+                                </div>
+                                <div class="col-md-4" style="padding-top: 20px;">
+                                    <span><b>Edit passcodes:</b></span>
+                                    <br>
+                                    <small>place holder text, place holder text.place holder text, place holder text.place holder text, place holder text.</small>
+                                </div>
+                                <div class="col-md-4" style="padding-top: 20px;">
+                                    <span><b>Delete passcodes:</b></span>
+                                    <br>
+                                    <small>place holder text, place holder text.place holder text, place holder text.place holder text, place holder text.</small>
+                                </div>
+                                <div class="col-md-4" style="padding-top: 20px;">
+                                    <span><b>Maintenance:</b></span>
+                                    <br>
+                                    <small>place holder text, place holder text.place holder text, place holder text.place holder text, place holder text.</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- ############ PAGE END-->
+
+</div>
+</div>
+</div>
+{{ include('@Brain/Resources/Defaults/FooterIncludes.html.twig') }}
+</body>
+</html>

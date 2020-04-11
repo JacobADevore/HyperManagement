@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>TitanLocks - Change Email</title>
+    {{ include('@Brain/Resources/Defaults/Head.html.twig') }}
+</head>
+<body>
+{{ include('@Brain/Resources/Defaults/UserNavBar.html.twig') }}
+
+<!-- content -->
+<div id="content" class="app-content box-shadow-z0" role="main">
+    {{ include('@Brain/Resources/Defaults/Footer.html.twig') }}
+    <div ui-view class="app-body" id="view">
+        <div class="p-a white lt box-shadow">
+            <div class="row">
+                <a data-toggle="modal" data-target="#aside" class="navbar-item pull-left hidden-lg-up" style="padding-top: 3px;"><i class="material-icons"></i></a>
+                <div class="col-sm-6">
+                    <h4 class="mb-0 _300">Change Email</h4>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6" style="padding-top: 20px;">
+            <div class="box">
+                <div class="box-header">
+                    <small>To complete email change you must click the verification link sent to your new email. This verification link is sent when the change email process is successfully completed.
+                    </small>
+                </div>
+                <div class="box-divider m-a-0"></div>
+                <div class="box-body">
+                    {% for flashMessage in app.session.flashbag.get('success') %}
+                        <div class="alert alert-success" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                            <span class="">{{ flashMessage }}</span>
+                        </div>
+                    {% endfor %}
+                    {% for flashMessage in app.session.flashbag.get('warning') %}
+                        <div class="alert alert-warning" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                            {{ flashMessage }}
+                        </div>
+                    {% endfor %}
+                    {% for flashMessage in app.session.flashbag.get('error') %}
+                        <div class="alert alert-danger" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                            {{ flashMessage }}
+                        </div>
+                    {% endfor %}
+                    {% if success is defined and success|length > 0 %}
+                        <div class="alert alert-success" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                            {{ success }}
+                        </div>
+                    {% endif %}
+                    {% if warning is defined and warning|length > 0 %}
+                        <div class="alert alert-warning" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                            {{ warning }}
+                        </div>
+                    {% endif %}
+                    {% if error is defined and error|length > 0 %}
+                        <div class="alert alert-danger" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                            {{ error }}
+                        </div>
+                    {% endif %}
+                    {% if app.request.get('error') is defined and app.request.get('error')|length > 0 %}
+                        <div class="alert alert-danger" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                            {{ app.request.get('error') }}
+                        </div>
+                    {% endif %}
+                    {% if app.request.get('warning') is defined and app.request.get('warning')|length > 0 %}
+                        <div class="alert alert-danger" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                            {{ app.request.get('warning') }}
+                        </div>
+                    {% endif %}
+                    {% if app.request.get('success') is defined and app.request.get('success')|length > 0 %}
+                        <div class="alert alert-danger" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                            {{ app.request.get('success') }}
+                        </div>
+                    {% endif %}
+                    <form method="post" role="form" class="ng-pristine ng-valid">
+                        <div class="form-group"><label for="exampleInputEmail1">Old Email</label><p style="padding-left:20px;">{{ email }}</p>
+                        </div>
+                        <div class="form-group"><label for="exampleInputEmail1">New Email</label><input type="email"
+                                                                                                        name="newEmail"
+                                                                                                            class="form-control"
+                                                                                                            id="exampleInputEmail1"
+                                                                                                            placeholder="New email">
+                        </div>
+                        <div class="form-group"><label for="exampleInputEmail1">Re-entered new email</label><input type="email"
+                                                                                                                   name="reEnteredNewEmail"
+                                                                                                        class="form-control"
+                                                                                                        id="exampleInputEmail1"
+                                                                                                        placeholder="Re-entered new email">
+                        </div>
+                        <div class="form-group"><label for="exampleInputPassword1">Password</label><input
+                                    type="password" name="password" class="form-control" id="exampleInputPassword1"
+                                    placeholder="Password"></div>
+                        <button type="submit" style="padding-left: 10px;padding-right: 10px;height: 30px;">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- .modal -->
+    <div id="modal" class="modal fade animate black-overlay" data-backdrop="false">
+        <div class="row-col h-v">
+            <div class="row-cell v-m">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content flip-y">
+                        <div class="modal-body text-center">
+                            <p class="p-y m-t"><i class="fa fa-remove text-warning fa-3x"></i></p>
+                            <p>Are you sure to delete your account?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn white p-x-md" data-dismiss="modal">No</button>
+                            <button type="button" class="btn btn-danger p-x-md" data-dismiss="modal">Yes</button>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- / .modal -->
+
+    <!-- ############ PAGE END-->
+
+</div>
+</div>
+</div>
+{{ include('@Brain/Resources/Defaults/FooterIncludes.html.twig') }}
+</body>
+</html>

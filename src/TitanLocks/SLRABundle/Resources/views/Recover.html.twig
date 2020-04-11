@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>TitanLocks - Recover</title>
+    {{ include('@Brain/Resources/Defaults/Head.html.twig') }}
+</head>
+<body>
+<div class="app" id="app">
+
+    <div class="center-block w-xxl w-auto-xs p-y-md">
+        {% for flashMessage in app.session.flashbag.get('success') %}
+            <div class="alert alert-success" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <span class="">{{ flashMessage }}</span>
+            </div>
+        {% endfor %}
+        {% for flashMessage in app.session.flashbag.get('warning') %}
+            <div class="alert alert-warning" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                {{ flashMessage }}
+            </div>
+        {% endfor %}
+        {% for flashMessage in app.session.flashbag.get('error') %}
+            <div class="alert alert-danger" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                {{ flashMessage }}
+            </div>
+        {% endfor %}
+        {% if success is defined and success|length > 0 %}
+            <div class="alert alert-success" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                {{ success }}
+            </div>
+        {% endif %}
+        {% if warning is defined and warning|length > 0 %}
+            <div class="alert alert-warning" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                {{ warning }}
+            </div>
+        {% endif %}
+        {% if error is defined and error|length > 0 %}
+            <div class="alert alert-danger" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                {{ error }}
+            </div>
+        {% endif %}
+        {% if app.request.get('error') is defined and app.request.get('error')|length > 0 %}
+            <div class="alert alert-danger" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                {{ app.request.get('error') }}
+            </div>
+        {% endif %}
+        {% if app.request.get('warning') is defined and app.request.get('warning')|length > 0 %}
+            <div class="alert alert-danger" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                {{ app.request.get('warning') }}
+            </div>
+        {% endif %}
+        {% if app.request.get('success') is defined and app.request.get('success')|length > 0 %}
+            <div class="alert alert-danger" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                {{ app.request.get('success') }}
+            </div>
+        {% endif %}
+
+        <div class="p-a-md box-color r box-shadow-z1 text-color m-a">
+            <div class="m-b">
+                Forgot your password?
+                <p class="text-xs m-t">Enter your email address below and we will send you instructions on how to change your password.</p>
+            </div>
+            <form method="post" name="reset">
+                <div class="md-form-group">
+                    <input type="email" name="email" class="md-input" required>
+                    <label>Your Email</label>
+                </div>
+                <button type="submit" class="btn primary btn-block p-x-md">Send</button>
+            </form>
+        </div>
+        <p id="alerts-container"></p>
+        <div class="p-v-lg text-center">Return to <a ui-sref="access.signin" href="{{ path('login') }}" class="text-primary _600">Sign in</a></div>
+    </div>
+
+</div>
+{{ include('@Brain/Resources/Defaults/FooterIncludes.html.twig') }}
+</body>
+</html>

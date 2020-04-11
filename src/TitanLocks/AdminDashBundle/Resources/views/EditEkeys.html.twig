@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>TitanLocks - Admin Manage Locations</title>
+    {{ include('@Brain/Resources/Defaults/Head.html.twig') }}
+</head>
+<body>
+{{ include('@Brain/Resources/Defaults/AdminNavBar.html.twig') }}
+
+<!-- content -->
+<div id="content" class="app-content box-shadow-z0" role="main">
+    {{ include('@Brain/Resources/Defaults/Footer.html.twig') }}
+    <div ui-view class="app-body" id="view">
+        <div class="p-a white lt box-shadow">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="row">
+                        <a data-toggle="modal" data-target="#aside" class="navbar-item pull-left hidden-lg-up" style="padding-top: 3px;"><i class="material-icons"></i></a>
+                        <h4 class="mb-0 _300" style="padding-left: 10px;">Edit Ekey</h4>
+                        <button style="padding-left: 5px;padding-right: 5px;margin-left: 10px;">
+                            <a href="{{ path('admin/dashboard/manage/ekeys') }}">Back</a></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="padding ng-scope">
+            {% for flashMessage in app.session.flashbag.get('success') %}
+                <div class="alert alert-success" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <span class="">{{ flashMessage }}</span>
+                </div>
+            {% endfor %}
+            {% for flashMessage in app.session.flashbag.get('warning') %}
+                <div class="alert alert-warning" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    {{ flashMessage }}
+                </div>
+            {% endfor %}
+            {% for flashMessage in app.session.flashbag.get('error') %}
+                <div class="alert alert-danger" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    {{ flashMessage }}
+                </div>
+            {% endfor %}
+            {% if success is defined and success|length > 0 %}
+                <div class="alert alert-success" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    {{ success }}
+                </div>
+            {% endif %}
+            {% if warning is defined and warning|length > 0 %}
+                <div class="alert alert-warning" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    {{ warning }}
+                </div>
+            {% endif %}
+            {% if error is defined and error|length > 0 %}
+                <div class="alert alert-danger" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    {{ error }}
+                </div>
+            {% endif %}
+            {% if app.request.get('error') is defined and app.request.get('error')|length > 0 %}
+                <div class="alert alert-danger" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    {{ app.request.get('error') }}
+                </div>
+            {% endif %}
+            {% if app.request.get('warning') is defined and app.request.get('warning')|length > 0 %}
+                <div class="alert alert-danger" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    {{ app.request.get('warning') }}
+                </div>
+            {% endif %}
+            {% if app.request.get('success') is defined and app.request.get('success')|length > 0 %}
+                <div class="alert alert-danger" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    {{ app.request.get('success') }}
+                </div>
+            {% endif %}
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="box">
+                        <div class="box-header">
+                            <h2><b>Ekey:</b> {{ username }}</h2>
+                        </div>
+                        <div class="box-divider m-a-0"></div>
+                        <div class="box-body">
+                            <form method="post" role="form" class="ng-pristine ng-valid">
+                                <div class="form-group">
+                                    <label for="locationName">Start Time:</label>
+                                    <div class='input-group date' id='datetimepicker1'>
+                                        <input type='text' class="form-control" name="editStartTime" />
+                                        <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="locationName">End Time:</label>
+                                    <div class='input-group date' id='datetimepicker2'>
+                                        <input type='text' class="form-control" name="editEndTime" />
+                                        <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                                    </div>
+                                </div>
+                                <button type="submit" style="padding-left: 10px;padding-right: 10px;height: 30px;">
+                                    Edit
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ############ PAGE END-->
+
+</div>
+</div>
+</div>
+{{ include('@Brain/Resources/Defaults/FooterIncludes.html.twig') }}
+<script type="text/javascript">
+    $(function () {
+        $('#datetimepicker1').datetimepicker();
+        $('#datetimepicker2').datetimepicker();
+    });
+</script>
+</body>
+</html>

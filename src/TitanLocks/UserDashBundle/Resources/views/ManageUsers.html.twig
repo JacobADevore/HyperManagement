@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>TitanLocks - Admin Manage Users</title>
+    {{ include('@Brain/Resources/Defaults/Head.html.twig') }}
+</head>
+<body>
+{{ include('@Brain/Resources/Defaults/UserNavBar.html.twig') }}
+
+<!-- content -->
+<div id="content" class="app-content box-shadow-z0" role="main">
+    {{ include('@Brain/Resources/Defaults/Footer.html.twig') }}
+    <div ui-view class="app-body" id="view">
+        <div class="p-a white lt box-shadow">
+            <div class="row">
+                <a data-toggle="modal" data-target="#aside" class="navbar-item pull-left hidden-lg-up" style="padding-top: 3px;"><i class="material-icons"></i></a>
+                <div class="col-sm-6">
+                    <h4 class="mb-0 _300">Manage Users</h4>
+                </div>
+            </div>
+        </div>
+        <div class="padding ng-scope">
+            {% for flashMessage in app.session.flashbag.get('success') %}
+                <div class="alert alert-success" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <span class="">{{ flashMessage }}</span>
+                </div>
+            {% endfor %}
+            {% for flashMessage in app.session.flashbag.get('warning') %}
+                <div class="alert alert-warning" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    {{ flashMessage }}
+                </div>
+            {% endfor %}
+            {% for flashMessage in app.session.flashbag.get('error') %}
+                <div class="alert alert-danger" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    {{ flashMessage }}
+                </div>
+            {% endfor %}
+            {% if success is defined and success|length > 0 %}
+                <div class="alert alert-success" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    {{ success }}
+                </div>
+            {% endif %}
+            {% if warning is defined and warning|length > 0 %}
+                <div class="alert alert-warning" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    {{ warning }}
+                </div>
+            {% endif %}
+            {% if error is defined and error|length > 0 %}
+                <div class="alert alert-danger" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    {{ error }}
+                </div>
+            {% endif %}
+            {% if app.request.get('error') is defined and app.request.get('error')|length > 0 %}
+                <div class="alert alert-danger" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    {{ app.request.get('error') }}
+                </div>
+            {% endif %}
+            {% if app.request.get('warning') is defined and app.request.get('warning')|length > 0 %}
+                <div class="alert alert-danger" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    {{ app.request.get('warning') }}
+                </div>
+            {% endif %}
+            {% if app.request.get('success') is defined and app.request.get('success')|length > 0 %}
+                <div class="alert alert-danger" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    {{ app.request.get('success') }}
+                </div>
+            {% endif %}
+            <div class="row">
+                {% if jobFeatures[0] == true %}
+        <div class="col-md-6">
+            <div class="box">
+                <div class="box-header">
+                    <h2>Create User</h2>
+                    <small>To complete email change you must click the verification link sent to your new email. This
+                        verification link is sent when the change email process is successfully completed.
+                    </small>
+                </div>
+                <div class="box-divider m-a-0"></div>
+                <div class="box-body">
+                    <form method="post" role="form" class="ng-pristine ng-valid">
+                        <div class="form-group"><label for="exampleInputEmail1">Email:</label><input type="email"
+                                                                                                     name="email"
+                                                                                                     class="form-control"
+                                                                                                     id="exampleInputEmail1"
+                                                                                                     placeholder="New email">
+                        </div>
+                        <div class="form-group"><label for="exampleInputEmail1">Re-entered email:</label><input
+                                    type="reEnteredEmail"
+                                    name="reEnteredEmail"
+                                    class="form-control"
+                                    id="exampleInputEmail1"
+                                    placeholder="Re-entered new email">
+                        </div>
+                        <div class="form-group"><label for="exampleInputPassword1">Password:</label><input
+                                    type="password" name="password" class="form-control" id="exampleInputPassword1"
+                                    placeholder="Password"></div>
+                        <div class="form-group"><label for="exampleInputPassword1">Job title (permissions):</label>
+                            <select class="form-control c-select m-b ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched"
+                                    ng-model="f.b" required="" name="jobTitle" style="">
+                                <option value="">Please choose a job</option>
+                                {% for jobTitle in jobTitles %}
+                                    <option value="{{ jobTitle }}">{{ jobTitle }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <button type="submit" style="padding-left: 10px;padding-right: 10px;height: 30px;">Create
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+                {% endif %}
+                {% if jobFeatures[1] == true or jobFeatures[2] == true %}
+                <div class="col-md-5">
+                    <div class="box">
+                        <div class="box-header">
+                            <h2>Edit users</h2>
+                            <small>Click on the below user to be taken to the edit screen
+                            </small>
+                            <div class="box-divider m-a-0" style="padding-top: 10px;"></div>
+                        </div>
+                        <div class="box-body">
+                            <div class="form-group">
+                                <table class="form-control table m-b-none tablet breakpoint footable-loaded footable"
+                                       ui-jp="footable" data-filter="#filter" style="width: 100%;border: 0px;">
+                                    <thead>
+                                    <tr>
+                                        <th>User Id</th>
+                                        <th>User Email</th>
+                                        <th>Controls</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="apiLocks">
+                                    {% for user in users %}
+                                        <tr class="form-control" style="display: table-row;background: #F0F0F0;float: bottom">
+                                            <td style="width: 30%;word-break: break-word">{{ user.id }}</td>
+                                            <td style="width: 35%;word-break: break-word">{{ user.email }}</td>
+                                            <form method="post">
+                                                <td style="width: 35%;word-break: break-word">
+                                                    {% if jobFeatures[2] == true %}
+                                                    <button type="submit" onclick="return confirm('Are you sure you want to delete user \''+this.id+'\'');" name="delete" value="{{ user.email }}" class="delete pull-right" id="{{ user.email }}">Delete</button>
+                                                    {% endif %}
+                                                    {% if jobFeatures[1] == true %}
+                                                    <button style="margin-right: 10px;" class="pull-right"><a href="{{ path('dashboard/manage/users', {'userId': user.id}) }}">Edit</a></button></td>
+                                                {% endif %}
+                                            </form>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+
+    <!-- .modal -->
+    <div id="modal" class="modal fade animate black-overlay" data-backdrop="false">
+        <div class="row-col h-v">
+            <div class="row-cell v-m">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content flip-y">
+                        <div class="modal-body text-center">
+                            <p class="p-y m-t"><i class="fa fa-remove text-warning fa-3x"></i></p>
+                            <p>Are you sure to delete your account?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn white p-x-md" data-dismiss="modal">No</button>
+                            <button type="button" class="btn btn-danger p-x-md" data-dismiss="modal">Yes</button>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- / .modal -->
+
+    <!-- ############ PAGE END-->
+
+</div>
+</div>
+</div>
+{{ include('@Brain/Resources/Defaults/FooterIncludes.html.twig') }}
+</body>
+</html>

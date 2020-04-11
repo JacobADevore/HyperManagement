@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>TitanLocks - Manage Locations</title>
+    {{ include('@Brain/Resources/Defaults/Head.html.twig') }}
+</head>
+<body>
+{{ include('@Brain/Resources/Defaults/UserNavBar.html.twig') }}
+
+<!-- content -->
+<div id="content" class="app-content box-shadow-z0" role="main">
+    {{ include('@Brain/Resources/Defaults/Footer.html.twig') }}
+    <div ui-view class="app-body" id="view">
+        <div class="p-a white lt box-shadow">
+            <div class="row">
+                <a data-toggle="modal" data-target="#aside" class="navbar-item pull-left hidden-lg-up" style="padding-top: 3px;"><i class="material-icons"></i></a>
+                <div class="col-sm-6">
+                    <h4 class="mb-0 _300">Manage Ekeys</h4>
+                </div>
+            </div>
+        </div>
+        <div class="padding ng-scope">
+            {% for flashMessage in app.session.flashbag.get('success') %}
+                <div class="alert alert-success" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <span class="">{{ flashMessage }}</span>
+                </div>
+            {% endfor %}
+            {% for flashMessage in app.session.flashbag.get('warning') %}
+                <div class="alert alert-warning" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    {{ flashMessage }}
+                </div>
+            {% endfor %}
+            {% for flashMessage in app.session.flashbag.get('error') %}
+                <div class="alert alert-danger" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    {{ flashMessage }}
+                </div>
+            {% endfor %}
+            {% if success is defined and success|length > 0 %}
+                <div class="alert alert-success" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    {{ success }}
+                </div>
+            {% endif %}
+            {% if warning is defined and warning|length > 0 %}
+                <div class="alert alert-warning" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    {{ warning }}
+                </div>
+            {% endif %}
+            {% if error is defined and error|length > 0 %}
+                <div class="alert alert-danger" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    {{ error }}
+                </div>
+            {% endif %}
+            {% if app.request.get('error') is defined and app.request.get('error')|length > 0 %}
+                <div class="alert alert-danger" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    {{ app.request.get('error') }}
+                </div>
+            {% endif %}
+            {% if app.request.get('warning') is defined and app.request.get('warning')|length > 0 %}
+                <div class="alert alert-danger" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    {{ app.request.get('warning') }}
+                </div>
+            {% endif %}
+            {% if app.request.get('success') is defined and app.request.get('success')|length > 0 %}
+                <div class="alert alert-danger" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    {{ app.request.get('success') }}
+                </div>
+            {% endif %}
+            <div class="row">
+                {% if jobFeatures[6] == true %}
+                <div class="col-md-6">
+                    <div class="box">
+                        <div class="box-header">
+                            <h2>Create Ekey</h2>
+                        </div>
+                        <div class="box-divider m-a-0"></div>
+                        <div class="box-body">
+                            <form method="post" role="form" class="ng-pristine ng-valid">
+                                <div class="form-group"><label for="locationName">Reciever Username:</label><input type="text"
+                                                                                                          name="username"
+                                                                                                          class="form-control"
+                                                                                                          id="passcode"
+                                                                                                          placeholder="Reciever Username">
+                                </div>
+                                <div class="form-group">
+                                    <label for="locationName">Start Time:</label>
+                                    <div class='input-group date' id='datetimepicker1'>
+                                        <input type='text' class="form-control" name="startTime" />
+                                        <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="locationName">End Time:</label>
+                                    <div class='input-group date' id='datetimepicker2'>
+                                        <input type='text' class="form-control" name="endTime" />
+                                        <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                                    </div>
+                                </div>
+                                <div class="form-group"><label for="exampleInputPassword1">Lock:</label>
+                                    <select id="userJobTitle" class="form-control c-select m-b ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched"
+                                            ng-model="f.b" required="" name="lockName" style="">
+                                        <option value="">Please choose a lock</option>
+                                        {% for lock in lockList %}
+                                            <option value="{{ lock }}">{{ lock }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="form-group"><label for="exampleInputPassword1">Remote Enable:</label>
+                                    <select id="userJobTitle" class="form-control c-select m-b ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched"
+                                            ng-model="f.b" required="" name="remoteEnable" style="">
+                                        <option value="1">Yes</option>
+                                        <option value="2">No</option>
+                                    </select>
+                                </div>
+                                <button type="submit" style="padding-left: 10px;padding-right: 10px;height: 30px;">
+                                    Create
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                {% if jobFeatures[7] == true or jobFeatures[8] == true %}
+                <div class="col-md-12">
+                    <div class="box">
+                        <div class="box-header">
+                            <h2>Edit Ekeys</h2>
+                            <small>Click on the below Ekey to be taken to the edit screen
+                            </small>
+                            <div class="box-divider m-a-0" style="padding-top: 10px;"></div>
+                        </div>
+                        <div class="box-body">
+                            <div class="form-group">
+                                <table class="form-control table m-b-none tablet breakpoint footable-loaded footable"
+                                       ui-jp="footable" data-filter="#filter" style="width: 100%;border: 0px;">
+                                    <thead>
+                                    <tr>
+                                        <th>Username</th>
+                                        <th>Start Date</th>
+                                        <th>End Date</th>
+                                        <th>Controls</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="apiLocks">
+                                    {% for lockEkey in lockEkeys %}
+                                        <tr class="form-control" style="display: table-row;background: #F0F0F0;float: bottom">
+                                            <td style="width: 25%;word-break: break-word">{{ lockEkey.username }}</td>
+                                            <td style="width: 25%;word-break: break-word">{{ lockEkey.startDate }}</td>
+                                            {% if lockEkey.endDate == 0 %}
+                                                <td style="width: 25%;word-break: break-word"><span class="label warning" title="Suspended">Permanent</span></td>
+                                            {% else %}
+                                                <td style="width: 25%;word-break: break-word">{{ lockEkey.endDate }}</td>
+                                            {% endif %}
+                                            <form method="post">
+                                                <td style="width: 25%;word-break: break-word">
+                                                    {% if jobFeatures[8] == true %}
+                                                    <button type="submit" onclick="return confirm('Are you sure you want to delete ekey \''+this.id+'\'');" name="delete" value="{{ lockEkey.ekeyId }}" class="delete pull-right" id="{{ lockEkey.username }}">Delete</button>
+                                                    {% endif %}
+                                                    {% if jobFeatures[7] == true %}
+                                                    <button style="margin-right: 10px;" class="pull-right"><a href="{{ path('dashboard/manage/ekeys', {'ekeyid': lockEkey.ekeyId, 'username': lockEkey.username}) }}">Edit</a></button></td>
+                                                    {% endif %}
+                                            </form>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ############ PAGE END-->
+
+</div>
+</div>
+</div>
+{{ include('@Brain/Resources/Defaults/FooterIncludes.html.twig') }}
+<script type="text/javascript">
+    $(function () {
+        $('#datetimepicker1').datetimepicker();
+        $('#datetimepicker2').datetimepicker();
+    });
+</script>
+</body>
+</html>

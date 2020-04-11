@@ -1,0 +1,184 @@
+<div class="app" id="app">
+
+    <!-- aside -->
+    <div id="aside" class="app-aside modal nav-dropdown">
+        <!-- fluid app aside -->
+        <div class="left navside dark dk" data-layout="column">
+            <div class="navbar no-radius">
+                <!-- brand -->
+                <a class="navbar-brand">
+                    <div ui-include="'../assets/images/logo.svg'"></div>
+                    <img src="../assets/images/logo.png" alt="." class="hide">
+                    <span class="hidden-folded inline">TitanLocks</span>
+                </a>
+                <!-- / brand -->
+            </div>
+            <div class="hide-scroll" data-flex>
+                <nav class="scroll nav-light">
+
+                    <ul class="nav" ui-nav>
+                        <li class="nav-header hidden-folded">
+                            <small class="text-muted">Main</small>
+                        </li>
+
+                        <li>
+                            <a href="{{ path('dashboard') }}" >
+                    <span class="nav-icon">
+                        <i class="material-icons md-24"></i>
+                    </span>
+                                <span class="nav-text">Dashboard</span>
+                            </a>
+                        </li>
+
+                        {% if jobFeatures[12] == true %}
+
+                        <li>
+                            <a href="{{ path('dashboard/manage/locations') }}" >
+                    <span class="nav-icon">
+                      <i class="material-icons md-24"></i>
+                    </span>
+                                <span class="nav-text">Manage Locations</span>
+                            </a>
+                        </li>
+
+                        {% endif %}
+
+                        {% if jobFeatures[0] == true or jobFeatures[1] == true or jobFeatures[3] == true %}
+
+                        <li>
+                            <a href="{{ path('dashboard/manage/users') }}" >
+                    <span class="nav-icon">
+                      <i class="material-icons md-24"></i>
+                    </span>
+                                <span class="nav-text">Manage Users</span>
+                            </a>
+                        </li>
+
+                        {% endif %}
+
+                        {% if jobFeatures[13] == true %}
+
+                        <li>
+                            <a href="{{ path('dashboard/manage/jobtitles') }}" >
+                    <span class="nav-icon">
+                      <i class="material-icons md-24"></i>
+                    </span>
+                                <span class="nav-text">Manage Job Titles</span>
+                            </a>
+                        </li>
+
+                        {% endif %}
+
+                        {% if jobFeatures[3] == true or jobFeatures[4] == true or jobFeatures[5] == true %}
+
+                        <li>
+                            <a href="{{ path('dashboard/manage/locks') }}" >
+                    <span class="nav-icon">
+                        <i class="material-icons md-24"></i>
+                    </span>
+                                <span class="nav-text">Manage Locks</span>
+                            </a>
+                        </li>
+
+                        {% endif %}
+
+                        {% if jobFeatures[9] == true or jobFeatures[10] == true or jobFeatures[11] == true %}
+
+                        <li>
+                            <a href="{{ path('dashboard/manage/passcodes') }}" >
+                    <span class="nav-icon">
+                        <i class="material-icons md-24"></i>
+                    </span>
+                                <span class="nav-text">Manage Passcodes</span>
+                            </a>
+                        </li>
+
+                        {% endif %}
+
+                        {% if jobFeatures[6] == true or jobFeatures[7] == true or jobFeatures[8] == true %}
+
+                        <li>
+                            <a href="{{ path('dashboard/manage/ekeys') }}" >
+                    <span class="nav-icon">
+                        <i class="material-icons md-24"></i>
+                    </span>
+                                <span class="nav-text">Manage Ekeys</span>
+                            </a>
+                        </li>
+
+                        {% endif %}
+
+                        <li>
+                            <a href="{{ path('dashboard/manage/maintenance') }}" >
+                    <span class="nav-icon">
+                      <i class="material-icons md-24"></i>
+                    </span>
+                                <span class="nav-text">Manage Maintenance</span>
+                            </a>
+                        </li>
+
+                        {% if jobFeatures[16] == true %}
+
+                        <li>
+                            <a href="{{ path('dashboard/viewunlockrecords') }}" >
+                    <span class="nav-icon">
+                      <i class="material-icons md-24"></i>
+                    </span>
+                                <span class="nav-text">View Unlock Records</span>
+                            </a>
+                        </li>
+
+                        {% endif %}
+
+                        <li class="nav-header hidden-folded">
+                            <small class="text-muted">Account</small>
+                        </li>
+
+                        <li>
+                            <a href="{{ path('dashboard/change/email') }}" >
+                    <span class="nav-icon">
+                      <i class="material-icons md-24"></i>
+                    </span>
+                                <span class="nav-text">Change Email</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="{{ path('dashboard/change/password') }}" >
+                    <span class="nav-icon">
+                      <i class="material-icons md-24"></i>
+                    </span>
+                                <span class="nav-text">Change Password</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="{{ path('logout') }}" >
+                    <span class="nav-icon">
+                      <i class="material-icons md-24"></i>
+                    </span>
+                                <span class="nav-text">Log Out</span>
+                            </a>
+                        </li>
+
+                        <li class="nav-header hidden-folded">
+                            <small class="text-muted">Help</small>
+                        </li>
+
+                        <li class="hidden-folded" >
+                            <a target="_blank" href="https://titanlocks.co/pages/support" >
+                                <span class="nav-text">Support Center</span>
+                            </a>
+                        </li>
+
+                        <li class="hidden-folded" >
+                            <a target="_blank" href="https://titanlocks.co/pages/support" >
+                                <span class="nav-text">Documentation</span>
+                            </a>
+                        </li>
+
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>

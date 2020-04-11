@@ -1,0 +1,46 @@
+indexes:
+
+- kind: PasswordChange
+  properties:
+  - name: email
+  - name: timeStamp
+
+- kind: PasswordChange
+  properties:
+  - name: __key__
+  - name: timeStamp
+
+- kind: EmailVerification
+  ancestor: yes
+  properties:
+  - name: timeStamp
+
+- kind: JobTitles
+  properties:
+  - name: adminUserId
+  - name: name
+
+- kind: AdminsAndUsers
+  properties:
+  - name: __key__
+  - name: adminUserId
+
+- kind: Locations
+  properties:
+  - name: adminUserId
+  - name: name
+
+- kind: Locks
+  properties:
+  - name: adminUserId
+  - name: name
+
+- kind: Locks
+  properties:
+  - name: adminUserId
+  - name: location
+
+- kind: Locks
+  properties:
+  - name: adminUserId
+  - name: lockNumber

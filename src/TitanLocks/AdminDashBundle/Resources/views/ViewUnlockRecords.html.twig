@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>TitanLocks - Admin Manage Locations</title>
+    {{ include('@Brain/Resources/Defaults/Head.html.twig') }}
+</head>
+<body>
+{{ include('@Brain/Resources/Defaults/AdminNavBar.html.twig') }}
+
+<!-- content -->
+<div id="content" class="app-content box-shadow-z0" role="main">
+    {{ include('@Brain/Resources/Defaults/Footer.html.twig') }}
+    <div ui-view class="app-body" id="view">
+        <div class="p-a white lt box-shadow">
+            <div class="row">
+                <a data-toggle="modal" data-target="#aside" class="navbar-item pull-left hidden-lg-up" style="padding-top: 3px;"><i class="material-icons"></i></a>
+                <div class="col-sm-6">
+                    <h4 class="mb-0 _300">View Unlock Records</h4>
+                </div>
+            </div>
+        </div>
+        <div class="padding ng-scope">
+            {% for flashMessage in app.session.flashbag.get('success') %}
+                <div class="alert alert-success" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <span class="">{{ flashMessage }}</span>
+                </div>
+            {% endfor %}
+            {% for flashMessage in app.session.flashbag.get('warning') %}
+                <div class="alert alert-warning" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    {{ flashMessage }}
+                </div>
+            {% endfor %}
+            {% for flashMessage in app.session.flashbag.get('error') %}
+                <div class="alert alert-danger" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    {{ flashMessage }}
+                </div>
+            {% endfor %}
+            {% if success is defined and success|length > 0 %}
+                <div class="alert alert-success" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    {{ success }}
+                </div>
+            {% endif %}
+            {% if warning is defined and warning|length > 0 %}
+                <div class="alert alert-warning" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    {{ warning }}
+                </div>
+            {% endif %}
+            {% if error is defined and error|length > 0 %}
+                <div class="alert alert-danger" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    {{ error }}
+                </div>
+            {% endif %}
+            {% if app.request.get('error') is defined and app.request.get('error')|length > 0 %}
+                <div class="alert alert-danger" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    {{ app.request.get('error') }}
+                </div>
+            {% endif %}
+            {% if app.request.get('warning') is defined and app.request.get('warning')|length > 0 %}
+                <div class="alert alert-danger" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    {{ app.request.get('warning') }}
+                </div>
+            {% endif %}
+            {% if app.request.get('success') is defined and app.request.get('success')|length > 0 %}
+                <div class="alert alert-danger" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    {{ app.request.get('success') }}
+                </div>
+            {% endif %}
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box">
+                        <div class="box-header"><div class="row"><h2 style="padding-left: 15px; ">View Unlock Records:</h2><p style="padding-left: 10px;">Page Number - <b>{{ pageValue }}</b></p></div></div>
+                        <form method="get">
+                        <div class="row w-100">
+                        <div class="form-group w-50" style="margin-left: 25px;">
+                            <select id="userJobTitle" class="form-control c-select m-b ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched"
+                                    ng-model="f.b" required="" name="lockid" style="">
+                                {% if currentLock == 'Please choose a lock' %}
+                                    <option value="">{{ currentLock }}</option>
+                                {% else %}
+                                    <option value="{{ lockId }},{{ currentLock }}">{{ currentLock }}</option>
+                                {% endif %}
+                                {% for lock in lockList %}
+                                    <option value="{{ lock.lockId }},{{ lock.lockName }}">{{ lock.lockName }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                            <input id="pageValue" type="text" name="pageNo" value="1" style="display: none;">
+                            <div>
+                                <button type="submit" style="margin-top: 5px;margin-left: 10px;">Search</button>
+                            </div>
+                            </form>
+                            <div>
+                                <button name="nextPage" id="nextPage" value="{{ pageValue + 1 }}" style="margin-top: 5px;margin-left: 25px;">Next Page</button>
+                            </div>
+                        </div>
+                            <table class="table m-b-none tablet breakpoint footable-loaded footable" ui-jp="footable"
+                                   data-filter="#filter" data-page-size="5">
+                                <thead>
+                                <tr>
+                                    <th data-toggle="true"
+                                        class="footable-visible footable-first-column footable-sortable">Lock Id<span
+                                                class="footable-sort-indicator"></span></th>
+                                    <th class="footable-visible footable-sortable">Record Type<span
+                                                class="footable-sort-indicator"></span></th>
+                                    <th class="footable-sortable">Success<span class="footable-sort-indicator"></span></th>
+                                    <th data-name="Date Of Birth" class="footable-sortable">Username<span class="footable-sort-indicator"></span></th>
+                                    <th class="footable-visible footable-last-column footable-sortable">passcode<span
+                                                class="footable-sort-indicator"></span></th>
+                                    <th class="footable-visible footable-last-column footable-sortable">Lock Date<span
+                                                class="footable-sort-indicator"></span></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for unlockRecord in unlockRecords %}
+                                <tr class="footable-even" style="display: table-row;">
+                                    <td class="footable-visible">{{ unlockRecord.lockId }}</td>
+                                    {% if unlockRecord.recordType == 1 %}
+                                        <td class="footable-visible">App unlock</td>
+                                    {% elseif unlockRecord.recordType == 2 %}
+                                        <td class="footable-visible">Touch the parking lock</td>
+                                    {% elseif unlockRecord.recordType == 3 %}
+                                        <td class="footable-visible">Gateway unlock</td>
+                                    {% elseif unlockRecord.recordType == 4 %}
+                                        <td class="footable-visible">Passcode unlock</td>
+                                    {% elseif unlockRecord.recordType == 5 %}
+                                        <td class="footable-visible">Parking lock raise</td>
+                                    {% elseif unlockRecord.recordType == 6 %}
+                                        <td class="footable-visible">Parking lock lower</td>
+                                    {% elseif unlockRecord.recordType == 7 %}
+                                        <td class="footable-visible">IC card unlock</td>
+                                    {% elseif unlockRecord.recordType == 8 %}
+                                        <td class="footable-visible">Fingerprint unlock</td>
+                                    {% elseif unlockRecord.recordType == 9 %}
+                                        <td class="footable-visible">Wristband unlock</td>
+                                    {% elseif unlockRecord.recordType == 10 %}
+                                        <td class="footable-visible">Mechanical key unlock</td>
+                                    {% elseif unlockRecord.recordType == 11 %}
+                                        <td class="footable-visible">Bluetooth</td>
+                                    {% elseif unlockRecord.recordType == 12 %}
+                                        <td class="footable-visible">Gateway unlock</td>
+                                    {% elseif unlockRecord.recordType == 29 %}
+                                        <td class="footable-visible">Unexpected unlock</td>
+                                    {% elseif unlockRecord.recordType == 30 %}
+                                        <td class="footable-visible">Door magnet close</td>
+                                    {% elseif unlockRecord.recordType == 31 %}
+                                        <td class="footable-visible">Door magnet open</td>
+                                        {% endif %}
+                                    {% if unlockRecord.success == 1 %}
+                                        <td data-value="1" class="footable-visible footable-last-column"><span
+                                                    class="label success" title="Active">Success</span></td>
+                                    {% else %}
+                                        <td data-value="1" class="footable-visible footable-last-column"><span
+                                                    class="label warning" title="Suspended">Failure</span></td>
+                                        {% endif %}
+                                    <td class="footable-visible">{{ unlockRecord.username }}</td>
+                                    <td class="footable-visible">{{ unlockRecord.passcode }}</td>
+                                    <td class="footable-visible">{{ unlockRecord.lockDate }}</td>
+                                </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+</div>
+</div>
+<script>
+    function nextPage(info) {
+        alert(this.value);
+    }
+</script>
+{{ include('@Brain/Resources/Defaults/FooterIncludes.html.twig') }}
+</body>
+</html>

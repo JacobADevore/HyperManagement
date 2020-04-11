@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>TitanLocks - Manage Locations</title>
+    {{ include('@Brain/Resources/Defaults/Head.html.twig') }}
+</head>
+<body>
+{{ include('@Brain/Resources/Defaults/UserNavBar.html.twig') }}
+
+<!-- content -->
+<div id="content" class="app-content box-shadow-z0" role="main">
+    {{ include('@Brain/Resources/Defaults/Footer.html.twig') }}
+    <div ui-view class="app-body" id="view">
+        <div class="p-a white lt box-shadow">
+            <div class="row">
+                <a data-toggle="modal" data-target="#aside" class="navbar-item pull-left hidden-lg-up" style="padding-top: 3px;"><i class="material-icons"></i></a>
+                <div class="col-sm-6">
+                    <h4 class="mb-0 _300">Manage Maintenance</h4>
+                </div>
+            </div>
+        </div>
+        <div class="padding ng-scope">
+            {% for flashMessage in app.session.flashbag.get('success') %}
+                <div class="alert alert-success" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <span class="">{{ flashMessage }}</span>
+                </div>
+            {% endfor %}
+            {% for flashMessage in app.session.flashbag.get('warning') %}
+                <div class="alert alert-warning" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    {{ flashMessage }}
+                </div>
+            {% endfor %}
+            {% for flashMessage in app.session.flashbag.get('error') %}
+                <div class="alert alert-danger" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    {{ flashMessage }}
+                </div>
+            {% endfor %}
+            {% if success is defined and success|length > 0 %}
+                <div class="alert alert-success" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    {{ success }}
+                </div>
+            {% endif %}
+            {% if warning is defined and warning|length > 0 %}
+                <div class="alert alert-warning" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    {{ warning }}
+                </div>
+            {% endif %}
+            {% if error is defined and error|length > 0 %}
+                <div class="alert alert-danger" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    {{ error }}
+                </div>
+            {% endif %}
+            {% if app.request.get('error') is defined and app.request.get('error')|length > 0 %}
+                <div class="alert alert-danger" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    {{ app.request.get('error') }}
+                </div>
+            {% endif %}
+            {% if app.request.get('warning') is defined and app.request.get('warning')|length > 0 %}
+                <div class="alert alert-danger" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    {{ app.request.get('warning') }}
+                </div>
+            {% endif %}
+            {% if app.request.get('success') is defined and app.request.get('success')|length > 0 %}
+                <div class="alert alert-danger" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    {{ app.request.get('success') }}
+                </div>
+            {% endif %}
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="box">
+                        <div class="box-header">
+                            <h2>Create Maintenance Ticket</h2>
+                        </div>
+                        <div class="box-divider m-a-0"></div>
+                        <div class="box-body">
+                            <form method="post" role="form" class="ng-pristine ng-valid">
+                                <div class="form-group"><label for="locationName">Description:</label><input type="text"
+                                                                                                               name="description"
+                                                                                                               class="form-control"
+                                                                                                               id="locationName"
+                                                                                                               placeholder="Description">
+                                </div>
+                                <div class="form-group"><label for="exampleInputPassword1">Ticket Urgency:</label>
+                                    <select id="userJobTitle" class="form-control c-select m-b ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched"
+                                            ng-model="f.b" required="" name="urgency" style="">
+                                        <option value="">Please choose a urgency</option>
+                                        <option value="earliestConvenience">Earliest Convenience</option>
+                                        <option value="asap">As soon as possible</option>
+                                        <option value="urgent">Urgent</option>
+                                    </select>
+                                </div>
+                                <div class="form-group"><label for="exampleInputPassword1">Lock:</label>
+                                    <select id="userJobTitle" class="form-control c-select m-b ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched"
+                                            ng-model="f.b" required="" name="lockId" style="">
+                                        <option value="">Please choose a lock</option>
+                                        {% for lock in lockList %}
+                                            <option value="{{ lock.lockId }}">{{ lock.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <button type="submit" style="padding-left: 10px;padding-right: 10px;height: 30px;">Create
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                {% if jobFeatures[14] == true or jobFeatures[15] == true %}
+                <div class="col-md-12">
+                    <div class="box">
+                        <div class="box-header">
+                            <h2>Edit Maintenance Tickets</h2>
+                            <small>Click on the below maintenance ticket to be taken to the edit screen
+                            </small>
+                            <div class="box-divider m-a-0" style="padding-top: 10px;"></div>
+                        </div>
+                        <div class="box-body">
+                            <div class="form-group">
+                                <table class="form-control table m-b-none tablet breakpoint footable-loaded footable"
+                                       ui-jp="footable" data-filter="#filter" style="width: 100%;border: 0px;">
+                                    <thead>
+                                    <tr>
+                                        <th>Status</th>
+                                        <th>Lock Name</th>
+                                        <th>Description</th>
+                                        <th>Passcode</th>
+                                        <th>Passcode Active Till</th>
+                                        <th>Urgency</th>
+                                        <th>User</th>
+                                        <th>Controls</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="apiLocks">
+                                    {% for maintenance in maintenances %}
+                                        <tr class="form-control" style="display: table-row;background: #F0F0F0;float: bottom">
+                                            {% if maintenance.status == 'incomplete' %}
+                                                <td id="0" style="width: 10%;word-break: break-word"><span class="label warning" title="Suspended">{{ maintenance.status }}</span></td>
+                                            {% elseif maintenance.status == 'completed' %}
+                                                <td id="1" style="width: 10%;word-break: break-word"><span class="label success" title="Success">{{ maintenance.status }}</span></td>
+                                            {% endif %}
+                                            <td style="width: 10%;word-break: break-word">{{ maintenance.lockName }}</td>
+                                            <td style="width: 15%;word-break: break-word">{{ maintenance.description }}</td>
+                                            <td style="width: 10%;word-break: break-word">{{ maintenance.passcode }}</td>
+                                            <td style="width: 10%;word-break: break-word">{{ maintenance.created }}</td>
+                                            <td style="width: 10%;word-break: break-word"><span class="label warning" title="Suspended">{{ maintenance.urgency }}</span></td>
+                                            <td style="width: 10%;word-break: break-word">{{ maintenance.user }}</td>
+                                            {% if maintenance.status == 'incomplete' %}
+                                            <form method="post">
+                                                <td style="width: 25%;word-break: break-word">
+                                                    {% if jobFeatures[14] == true %}
+                                                    <button type="submit" onclick="return confirm('Are you sure you want to delete Maintenance Ticket \''+this.id+'\'');" name="delete" value="{{ maintenance.id }}" class="delete pull-right" id="{{ maintenance.description }}">Delete</button>
+                                                    {% endif %}
+                                                    <button style="margin-right: 10px;" type="submit" onclick="return confirm('Are you sure you want to mark this Maintenance Task as completed');" name="completed" value="{{ maintenance.id }}" class="delete pull-right">Completed</button></td>
+                                            </form>
+                                            {% else %}
+                                                <form method="post">
+                                                    <td style="width: 25%;word-break: break-word">
+                                                {% if jobFeatures[14] == true %}
+                                                        <button type="submit" onclick="return confirm('Are you sure you want to delete Maintenance Ticket \''+this.id+'\'');" name="delete" value="{{ maintenance.id }}" class="delete pull-right" id="{{ maintenance.description }}">Delete</button></td>
+                                                    {% endif %}
+                                                    </form>
+                                                {% endif %}
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+
+    <!-- .modal -->
+    <div id="modal" class="modal fade animate black-overlay" data-backdrop="false">
+        <div class="row-col h-v">
+            <div class="row-cell v-m">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content flip-y">
+                        <div class="modal-body text-center">
+                            <p class="p-y m-t"><i class="fa fa-remove text-warning fa-3x"></i></p>
+                            <p>Are you sure to delete your account?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn white p-x-md" data-dismiss="modal">No</button>
+                            <button type="button" class="btn btn-danger p-x-md" data-dismiss="modal">Yes</button>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- / .modal -->
+
+    <!-- ############ PAGE END-->
+
+</div>
+</div>
+</div>
+{{ include('@Brain/Resources/Defaults/FooterIncludes.html.twig') }}
+<script>
+    $( document ).ready(function() {
+        var table, rows, switching, i, x, y, shouldSwitch;
+        table = document.getElementById("apiLocks");
+        switching = true;
+        /*Make a loop that will continue until
+        no switching has been done:*/
+        while (switching) {
+            //start by saying: no switching is done:
+            switching = false;
+            rows = table.getElementsByTagName("TR");
+            /*Loop through all table rows (except the
+            first, which contains table headers):*/
+            for (i = 0; i < (rows.length); i++) {
+                //start by saying there should be no switching:
+                shouldSwitch = false;
+                /*Get the two elements you want to compare,
+                one from current row and one from the next:*/
+                x = rows[i].getElementsByTagName("TD")[0].id;
+                y = rows[i + 1].getElementsByTagName("TD")[0].id;
+                //check if the two rows should switch place:
+                if (x > y) {
+                    //if so, mark as a switch and break the loop:
+                    shouldSwitch = true;
+                    break;
+                }
+            }
+            if (shouldSwitch) {
+                /*If a switch has been marked, make the switch
+                and mark that a switch has been done:*/
+                rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                switching = true;
+            }
+        }
+    });
+</script>
+</body>
+</html>

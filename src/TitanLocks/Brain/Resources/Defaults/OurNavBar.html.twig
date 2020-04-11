@@ -1,0 +1,93 @@
+<div class="app" id="app">
+
+    <!-- aside -->
+    <div id="aside" class="app-aside modal nav-dropdown">
+        <!-- fluid app aside -->
+        <div class="left navside dark dk" data-layout="column">
+            <div class="navbar no-radius">
+                <!-- brand -->
+                <a class="navbar-brand">
+                    <div ui-include="'../assets/images/logo.svg'"></div>
+                    <img src="../assets/images/logo.png" alt="." class="hide">
+                    <span class="hidden-folded inline">TitanLocks</span>
+                </a>
+                <!-- / brand -->
+            </div>
+            <div class="hide-scroll" data-flex>
+                <nav class="scroll nav-light">
+
+                    <ul class="nav" ui-nav>
+                        <li class="nav-header hidden-folded">
+                            <small class="text-muted">Main</small>
+                        </li>
+
+                        <li>
+                            <a href="{{ path('our/dashboard') }}" >
+                    <span class="nav-icon">
+                        <i class="material-icons md-24"></i>
+                    </span>
+                                <span class="nav-text">Dashboard</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="{{ path('our/dashboard/manage/users') }}" >
+                    <span class="nav-icon">
+                      <i class="material-icons md-24"></i>
+                    </span>
+                                <span class="nav-text">Manage Users</span>
+                            </a>
+                        </li>
+
+                        <li class="nav-header hidden-folded">
+                            <small class="text-muted">Account</small>
+                        </li>
+
+                        <li>
+                            <a href="{{ path('our/dashboard/change/email') }}" >
+                    <span class="nav-icon">
+                      <i class="material-icons md-24"></i>
+                    </span>
+                                <span class="nav-text">Change Email</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="{{ path('our/dashboard/change/password') }}" >
+                    <span class="nav-icon">
+                      <i class="material-icons md-24"></i>
+                    </span>
+                                <span class="nav-text">Change Password</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="{{ path('logout') }}" >
+                    <span class="nav-icon">
+                      <i class="material-icons md-24"></i>
+                    </span>
+                                <span class="nav-text">Log Out</span>
+                            </a>
+                        </li>
+
+                        <li class="nav-header hidden-folded">
+                            <small class="text-muted">Help</small>
+                        </li>
+
+                        <li class="hidden-folded" >
+                            <a target="_blank" href="https://titanlocks.co/pages/support" >
+                                <span class="nav-text">Support Center</span>
+                            </a>
+                        </li>
+
+                        <li class="hidden-folded" >
+                            <a target="_blank" href="https://titanlocks.co/pages/support" >
+                                <span class="nav-text">Documentation</span>
+                            </a>
+                        </li>
+
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>

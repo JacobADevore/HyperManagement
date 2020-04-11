@@ -1,0 +1,19 @@
+our_dash:
+    resource: "@OurDashBundle/Controller/"
+    type:     annotation
+    prefix:   /our/dashboard
+
+admin_dash:
+    resource: "@AdminDashBundle/Controller/"
+    type:     annotation
+    prefix:   /admin/dashboard
+
+slra:
+    resource: "@SLRABundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+user_dash:
+    resource: "@UserDashBundle/Controller/"
+    type:     annotation
+    prefix:   /dashboard

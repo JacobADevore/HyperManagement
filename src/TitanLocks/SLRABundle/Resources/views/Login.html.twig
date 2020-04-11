@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>TitanLocks - Login</title>
+    {{ include('@Brain/Resources/Defaults/Head.html.twig') }}
+</head>
+<body>
+<div class="app" id="app">
+
+    <div class="center-block w-xxl w-auto-xs p-y-md">
+        {% for flashMessage in app.session.flashbag.get('success') %}
+            <div class="alert alert-success" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <span class="">{{ flashMessage }}</span>
+            </div>
+        {% endfor %}
+        {% for flashMessage in app.session.flashbag.get('warning') %}
+            <div class="alert alert-warning" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                {{ flashMessage }}
+            </div>
+        {% endfor %}
+        {% for flashMessage in app.session.flashbag.get('error') %}
+            <div class="alert alert-danger" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                {{ flashMessage }}
+            </div>
+        {% endfor %}
+        {% if success is defined and success|length > 0 %}
+            <div class="alert alert-success" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                {{ success }}
+            </div>
+        {% endif %}
+        {% if warning is defined and warning|length > 0 %}
+            <div class="alert alert-warning" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                {{ warning }}
+            </div>
+        {% endif %}
+        {% if error is defined and error|length > 0 %}
+            <div class="alert alert-danger" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                {{ error }}
+            </div>
+        {% endif %}
+        {% if app.request.get('error') is defined and app.request.get('error')|length > 0 %}
+            <div class="alert alert-danger" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                {{ app.request.get('error') }}
+            </div>
+        {% endif %}
+        {% if app.request.get('warning') is defined and app.request.get('warning')|length > 0 %}
+            <div class="alert alert-danger" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                {{ app.request.get('warning') }}
+            </div>
+        {% endif %}
+        {% if app.request.get('success') is defined and app.request.get('success')|length > 0 %}
+            <div class="alert alert-danger" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                {{ app.request.get('success') }}
+            </div>
+        {% endif %}
+
+        <div class="p-a-md box-color r box-shadow-z1 text-color m-a">
+            <div class="m-b text-sm">
+                Sign in with your TitanLocks Account
+            </div>
+            <form method="post" name="form">
+                <div class="md-form-group float-label">
+                    <input type="text" name="emailOrUsername" class="md-input" ng-model="user.email" required>
+                    <label>Email</label>
+                </div>
+                <div class="md-form-group float-label">
+                    <input type="password" name="password" class="md-input" ng-model="user.password" required>
+                    <label>Password</label>
+                </div>
+                <div class="m-b-md">
+                    <label class="md-check">
+                        <input type="checkbox" name="rememberMe" checked><i class="primary"></i> Keep me signed in
+                    </label>
+                </div>
+                <button type="submit" class="btn primary btn-block p-x-md">Sign in</button>
+            </form>
+        </div>
+
+        <div class="p-v-lg text-center">
+            <div class="m-b"><a ui-sref="access.forgot-password" href="{{ path('recover') }}" class="text-primary _600">Forgot password?</a></div>
+            <div>Do not have an account? <a ui-sref="access.signup" href="https://titanlocks.co/pages/support" class="text-primary _600">Sign up</a></div>
+        </div>
+    </div>
+
+</div>
+{{ include('@Brain/Resources/Defaults/FooterIncludes.html.twig') }}
+</body>
+</html>

@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>TitanLocks - Manage Job Locks</title>
+    {{ include('@Brain/Resources/Defaults/Head.html.twig') }}
+</head>
+<body>
+{{ include('@Brain/Resources/Defaults/UserNavBar.html.twig') }}
+
+<!-- content -->
+<div id="content" class="app-content box-shadow-z0" role="main">
+    {{ include('@Brain/Resources/Defaults/Footer.html.twig') }}
+    <div ui-view class="app-body" id="view">
+        <div class="p-a white lt box-shadow">
+            <div class="row">
+                <a data-toggle="modal" data-target="#aside" class="navbar-item pull-left hidden-lg-up" style="padding-top: 3px;"><i class="material-icons"></i></a>
+                <div class="col-sm-6">
+                    <h4 class="mb-0 _300">Manage Locks</h4>
+                </div>
+            </div>
+        </div>
+        <div class="padding ng-scope">
+            {% for flashMessage in app.session.flashbag.get('success') %}
+                <div class="alert alert-success" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <span class="">{{ flashMessage }}</span>
+                </div>
+            {% endfor %}
+            {% for flashMessage in app.session.flashbag.get('warning') %}
+                <div class="alert alert-warning" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    {{ flashMessage }}
+                </div>
+            {% endfor %}
+            {% for flashMessage in app.session.flashbag.get('error') %}
+                <div class="alert alert-danger" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    {{ flashMessage }}
+                </div>
+            {% endfor %}
+            {% if app.request.get('error') is defined and app.request.get('error')|length > 0 %}
+                <div class="alert alert-danger" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    {{ app.request.get('error') }}
+                </div>
+            {% endif %}
+            {% if app.request.get('warning') is defined and app.request.get('warning')|length > 0 %}
+                <div class="alert alert-danger" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    {{ app.request.get('warning') }}
+                </div>
+            {% endif %}
+            {% if app.request.get('success') is defined and app.request.get('success')|length > 0 %}
+                <div class="alert alert-danger" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    {{ app.request.get('success') }}
+                </div>
+            {% endif %}
+            {% if success is defined and success|length > 0 %}
+                <div class="alert alert-success" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    {{ success }}
+                </div>
+            {% endif %}
+            {% if warning is defined and warning|length > 0 %}
+                <div class="alert alert-warning" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    {{ warning }}
+                </div>
+            {% endif %}
+            {% if error is defined and error|length > 0 %}
+                <div class="alert alert-danger" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    {{ error }}
+                </div>
+            {% endif %}
+            <div class="row">
+                 {% if jobFeatures[3] == true %}
+                <div class="col-md-6">
+                    <div class="box">
+                        <div class="box-header">
+                            <h2>Create new lock</h2>
+                            <small>Locks are automatically loaded in from your account when sync with app.To refresh lock list please click the 'Refresh Locks' button.
+                                Locks show 'In use' when there is already a lock created and link to that lock. If you leave the lock name blank it will use the lock name from the app shown in the table.
+                            </small>
+                        </div>
+                        <a href="{{ path('dashboard/manage/locks') }}"><button type="submit" name="refreshLocks" style="height: 30px;float: right;margin-right: 20px;">
+                                Refresh Locks
+                            </button></a>
+                        <div class="box-divider m-a-0"></div>
+                        <div class="box-body">
+                            <form method="post" role="form" class="ng-pristine ng-valid">
+                                <div class="form-group"><label for="exampleInputPassword1">Lock Name:</label><input
+                                            type="text" name="lockName" class="form-control"
+                                            id="exampleInputPassword1"
+                                            placeholder="New lock name"></div>
+                                <div class="form-group"><label for="exampleInputPassword1">Location:</label>
+                                    <select class="form-control c-select m-b ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched"
+                                            ng-model="f.b" required="" name="locationName" style="">
+                                        <option value="">Please choose a location</option>
+                                        {% for lockLocation in lockLocations %}
+                                            <option value="{{ lockLocation }}">{{ lockLocation }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <table class="form-control table m-b-none tablet breakpoint footable-loaded footable"
+                                           ui-jp="footable" data-filter="#filter" style="width: 100%;border: 0px;">
+                                        <thead>
+                                        <tr>
+                                            <th>Select</th>
+                                            <th>Lock Name</th>
+                                            <th>Lock Number</th>
+                                            <th>Status</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="apiLocks">
+                                        {% for apiLockinfo in apiLockList %}
+                                            <tr class="form-control" style="display: table-row;background: #F0F0F0;float: bottom">
+                                                {% if apiLockinfo.lockName in lockNumbers %}
+                                                <td id="1"><input type="checkbox" name="lockNumber" value="{{ apiLockinfo.lockName }}" style="height: 16px;width: 16px;" disabled></td>
+                                                {% else %}
+                                                    <td id="0"><input type="checkbox" name="lockNumber" value="{{ apiLockinfo.lockName }}" style="height: 16px;width: 16px;"></td>
+                                                {% endif %}
+                                                <td style="width: 25%;word-break: break-word">{{ apiLockinfo.lockAlias }}</td>
+                                                <td style="width: 25%;word-break: break-word">{{ apiLockinfo.lockName }}</td>
+                                                {% if apiLockinfo.lockName in lockNumbers %}
+                                                    <td><span class="label warning" title="Suspended">In use</span></td>
+                                                {% else %}
+                                                    <td><span class="label success" title="Available">Available</span></td>
+                                                {% endif %}
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <button class="btn btn-fw info" type="submit" style="padding-left: 10px;padding-right: 10px;height: 40px;text-align: center">Create</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                {% if jobFeatures[4] == true or jobFeatures[5] == true %}
+                <div class="col-md-6">
+                    <div class="box">
+                        <div class="box-header">
+                            <h2>Edit Locks</h2>
+                            <small>Click on the below lock to be taken to the edit screen
+                            </small>
+                            <div class="box-divider m-a-0" style="padding-top: 10px;"></div>
+                        </div>
+                        <div class="box-body">
+                            <table class="form-control table m-b-none tablet breakpoint footable-loaded footable"
+                                   ui-jp="footable" data-filter="#filter" style="width: 100%;border: 0px;">
+                                <thead>
+                                <tr>
+                                    <th>Lock Name</th>
+                                    <th>Lock Number</th>
+                                    <th>Location</th>
+                                    <th>Battery Life</th>
+                                    <th>Controls</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for lock in locks %}
+                                    {% for apiLockinfo in apiLockList %}
+                                        {% if apiLockinfo.lockName == lock.number %}
+                                            <form method="post" >
+                                                <tr class="form-control" style="display: table-row;background: #F0F0F0;float: bottom">
+                                                    <td style="width: 20%;word-break: break-word">{{ lock.name }}</td>
+                                                    <td style="width: 20%;word-break: break-word">{{ lock.number }}</td>
+                                                    <td style="width: 20%;word-break: break-word">{{ lock.location }}</td>
+                                                    <td style="width: 20%;word-break: break-word"><i class="material-icons md-24"></i>{{ apiLockinfo.battery }}%</td>
+                                                    <td style="width: 20%;word-break: break-word">
+                                                        {% if jobFeatures[5] == true %}
+                                                        <button type="submit" onclick="return confirm('Are you sure you want to delete lock \''+this.id+'\'');" name="delete" value="{{ lock.name }}" class="delete pull-right" id="{{ lock.name }}">Delete</button>
+                                                        {% endif %}
+                                                        {% if jobFeatures[4] == true %}
+                                                        <a href="{{ path('dashboard/manage/locks', {'lockName': lock.name}) }}"><button style="margin-right: 10px;" class="pull-right">Edit</button></a></td>
+                                                        {% endif %}
+                                                </tr>
+                                            </form>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- ############ PAGE END-->
+
+</div>
+</div>
+</div>
+{{ include('@Brain/Resources/Defaults/FooterIncludes.html.twig') }}
+<script>
+    $("input:checkbox").on('click', function() {
+        var $box = $(this);
+        if ($box.is(":checked")) {
+            var group = "input:checkbox[name='" + $box.attr("name") + "']";
+            $(group).prop("checked", false);
+            $box.prop("checked", true);
+        } else {
+            $box.prop("checked", false);
+        }
+    });
+    $( document ).ready(function() {
+        var table, rows, switching, i, x, y, shouldSwitch;
+        table = document.getElementById("apiLocks");
+        switching = true;
+        /*Make a loop that will continue until
+        no switching has been done:*/
+        while (switching) {
+            //start by saying: no switching is done:
+            switching = false;
+            rows = table.getElementsByTagName("TR");
+            /*Loop through all table rows (except the
+            first, which contains table headers):*/
+            for (i = 0; i < (rows.length); i++) {
+                //start by saying there should be no switching:
+                shouldSwitch = false;
+                /*Get the two elements you want to compare,
+                one from current row and one from the next:*/
+                x = rows[i].getElementsByTagName("TD")[0].id;
+                y = rows[i + 1].getElementsByTagName("TD")[0].id;
+                //check if the two rows should switch place:
+                if (x > y) {
+                    //if so, mark as a switch and break the loop:
+                    shouldSwitch = true;
+                    break;
+                }
+            }
+            if (shouldSwitch) {
+                /*If a switch has been marked, make the switch
+                and mark that a switch has been done:*/
+                rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                switching = true;
+            }
+        }
+    });
+</script>
+</body>
+</html>

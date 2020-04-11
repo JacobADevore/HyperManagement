@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>TitanLocks - Manage Locations</title>
+    {{ include('@Brain/Resources/Defaults/Head.html.twig') }}
+</head>
+<body>
+{{ include('@Brain/Resources/Defaults/UserNavBar.html.twig') }}
+
+<!-- content -->
+<div id="content" class="app-content box-shadow-z0" role="main">
+    {{ include('@Brain/Resources/Defaults/Footer.html.twig') }}
+    <div ui-view class="app-body" id="view">
+        <div class="p-a white lt box-shadow">
+            <div class="row">
+                <a data-toggle="modal" data-target="#aside" class="navbar-item pull-left hidden-lg-up" style="padding-top: 3px;"><i class="material-icons"></i></a>
+                <div class="col-sm-6">
+                    <h4 class="mb-0 _300">Manage Passcodes</h4>
+                </div>
+            </div>
+        </div>
+        <div class="padding ng-scope">
+            {% for flashMessage in app.session.flashbag.get('success') %}
+                <div class="alert alert-success" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <span class="">{{ flashMessage }}</span>
+                </div>
+            {% endfor %}
+            {% for flashMessage in app.session.flashbag.get('warning') %}
+                <div class="alert alert-warning" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    {{ flashMessage }}
+                </div>
+            {% endfor %}
+            {% for flashMessage in app.session.flashbag.get('error') %}
+                <div class="alert alert-danger" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    {{ flashMessage }}
+                </div>
+            {% endfor %}
+            {% if success is defined and success|length > 0 %}
+                <div class="alert alert-success" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    {{ success }}
+                </div>
+            {% endif %}
+            {% if warning is defined and warning|length > 0 %}
+                <div class="alert alert-warning" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    {{ warning }}
+                </div>
+            {% endif %}
+            {% if error is defined and error|length > 0 %}
+                <div class="alert alert-danger" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    {{ error }}
+                </div>
+            {% endif %}
+            {% if app.request.get('error') is defined and app.request.get('error')|length > 0 %}
+                <div class="alert alert-danger" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    {{ app.request.get('error') }}
+                </div>
+            {% endif %}
+            {% if app.request.get('warning') is defined and app.request.get('warning')|length > 0 %}
+                <div class="alert alert-danger" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    {{ app.request.get('warning') }}
+                </div>
+            {% endif %}
+            {% if app.request.get('success') is defined and app.request.get('success')|length > 0 %}
+                <div class="alert alert-danger" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    {{ app.request.get('success') }}
+                </div>
+            {% endif %}
+            <div class="row">
+                {% if jobFeatures[9] == true %}
+                <div class="col-md-6">
+                    <div class="box">
+                        <div class="box-header">
+                            <h2>Create Passcode</h2>
+                        </div>
+                        <div class="box-divider m-a-0"></div>
+                        <div class="box-body">
+                            <form method="post" role="form" class="ng-pristine ng-valid">
+                                <div class="form-group" id="passcode"><label for="locationName">Passcode:</label><input type="text"
+                                                                                                          name="passcode"
+                                                                                                          class="form-control"
+                                                                                                          id="passcode"
+                                                                                                          placeholder="Passcode">
+                                </div>
+                                    <div class="form-group" id="startTime">
+                                        <label for="locationName">Start Time:</label>
+                                        <div class='input-group date' id='datetimepicker1'>
+                                            <input type='text' class="form-control" name="startTime" />
+                                            <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                                        </div>
+                                    </div>
+                                <div class="form-group" id="endTime">
+                                    <label for="locationName">End Time:</label>
+                                    <div class='input-group date' id='datetimepicker2'>
+                                        <input type='text' class="form-control" name="endTime" />
+                                        <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                                    </div>
+                                </div>
+                                <div class="form-group"><label for="exampleInputPassword1">Location:</label>
+                                    <select id="location" class="form-control c-select m-b ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched"
+                                            ng-model="f.b" style="" onchange="updateLockList(this)">
+                                        <option value="">Choose a location to help you find a lock easier</option>
+                                        {% for locationsAndLock in locationsAndLocks %}
+                                            <option id="{{ locationsAndLock.locationName }}" value="{{ locationsAndLock[0]|json_encode() }}">{{ locationsAndLock.locationName }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="form-group"><label for="exampleInputPassword1">Locks:</label>
+                                    <select id="userJobTitle" class="form-control c-select m-b ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched"
+                                            ng-model="f.b" required="" name="lockName" style="">
+                                        <option value="">Please choose a lock</option>
+                                        {% for lock in lockList %}
+                                            <option value="{{ lock }}">{{ lock }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="form-group" id="passcodeType" style="display: none;"><label for="exampleInputPassword1">Passcode Type:</label>
+                                    <select id="userJobTitle" class="form-control c-select m-b ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched"
+                                            ng-model="f.b" required="" name="passcodeType" style="" onchange="passcodeTypeChange(this.value);">
+                                        <option value="3">Period</option>
+                                        <option value="1">One-time</option>
+                                        <option value="2">Permanent</option>
+                                        <option value="4">Weekend Cyclic</option>
+                                        <option value="5">Daily Cyclic</option>
+                                        <option value="6">Workday Cyclic</option>
+                                        <option value="7">Monday Cyclic</option>
+                                        <option value="8">Tuesday Cyclic</option>
+                                        <option value="9">Wednesday Cyclic</option>
+                                        <option value="10">Thursday Cyclic</option>
+                                        <option value="11">Friday Cyclic</option>
+                                        <option value="12">Saturday Cyclic</option>
+                                        <option value="13">Sunday Cyclic</option>
+                                    </select>
+                                </div>
+                                <div class="form-group"><label for="exampleInputPassword1">Passcode Generate:</label>
+                                    <select id="userJobTitle" class="form-control c-select m-b ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched"
+                                            ng-model="f.b" required="" name="passcodeGenerate" style="" onchange="passcodeGenerateChange(this.value);">
+                                        <option value="0">No</option>
+                                        <option value="1">Yes</option>
+                                    </select>
+                                </div>
+                                <button type="submit" style="padding-left: 10px;padding-right: 10px;height: 30px;">
+                                    Create
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                {% if jobFeatures[10] == true or jobFeatures[11] == true %}
+                <div class="col-md-12">
+                    <div class="box">
+                        <div class="box-header">
+                            <h2>Edit Passcodes</h2>
+                            <small>Click on the below passcode to be taken to the edit screen
+                            </small>
+                            <div class="box-divider m-a-0" style="padding-top: 10px;"></div>
+                        </div>
+                        <div class="box-body">
+                            <div class="form-group">
+                                <table class="form-control table m-b-none tablet breakpoint footable-loaded footable"
+                                       ui-jp="footable" data-filter="#filter" style="width: 100%;border: 0px;">
+                                    <thead>
+                                    <tr>
+                                        <th>Lock Name</th>
+                                        <th>Passcode</th>
+                                        <th>Start Date</th>
+                                        <th>End Date</th>
+                                        <th>Passcode Type</th>
+                                        <th>Controls</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="apiLocks">
+                                    {% for lockPasscode in lockPasscodes %}
+                                        <tr class="form-control" style="display: table-row;background: #F0F0F0;float: bottom">
+                                            <td style="width: 20%;word-break: break-word">{{ lockPasscode.lockName }}</td>
+                                            <td style="width: 10%;word-break: break-word">{{ lockPasscode.passcode }}</td>
+                                            <td style="width: 20%;word-break: break-word">{{ lockPasscode.startDate }}</td>
+                                            {% if lockPasscode.endDate == 0 or lockPasscode.passcodeType == 2 %}
+                                                <td style="width: 20%;word-break: break-word"><span class="label warning" title="Suspended">Permanent</span></td>
+                                            {% elseif lockPasscode.passcodeType == 1 %}
+                                                <td style="width: 20%;word-break: break-word"><span class="label warning" title="Suspended">One-Time</span></td>
+                                                {% else %}
+                                                    <td style="width: 20%;word-break: break-word">{{ lockPasscode.endDate }}</td>
+                                            {% endif %}
+                                            {% if lockPasscode.passcodeType == 1 %}
+                                                <td style="width: 10%;word-break: break-word">One-time</td>
+                                            {% elseif lockPasscode.passcodeType == 2 %}
+                                                <td style="width: 10%;word-break: break-word">Permanent</td>
+                                            {% elseif lockPasscode.passcodeType == 3 %}
+                                                <td style="width: 10%;word-break: break-word">Period</td>
+                                            {% elseif lockPasscode.passcodeType == 4 %}
+                                                <td style="width: 10%;word-break: break-word">Delete</td>
+                                            {% elseif lockPasscode.passcodeType == 5 %}
+                                                <td style="width: 10%;word-break: break-word">Weekend Cyclic</td>
+                                            {% elseif lockPasscode.passcodeType == 6 %}
+                                                <td style="width: 10%;word-break: break-word">Daily Cyclic</td>
+                                            {% elseif lockPasscode.passcodeType == 7 %}
+                                                <td style="width: 10%;word-break: break-word">Workday Cyclic</td>
+                                            {% elseif lockPasscode.passcodeType == 8 %}
+                                                <td style="width: 10%;word-break: break-word">Monday Cyclic</td>
+                                            {% elseif lockPasscode.passcodeType == 9 %}
+                                                <td style="width: 10%;word-break: break-word">Tuesday Cyclic</td>
+                                            {% elseif lockPasscode.passcodeType == 10 %}
+                                                <td style="width: 10%;word-break: break-word">Wednesday Cyclic</td>
+                                            {% elseif lockPasscode.passcodeType == 11 %}
+                                                <td style="width: 10%;word-break: break-word">Thursday Cyclic</td>
+                                            {% elseif lockPasscode.passcodeType == 12 %}
+                                                <td style="width: 10%;word-break: break-word">Friday Cyclic</td>
+                                            {% elseif lockPasscode.passcodeType == 13 %}
+                                                <td style="width: 10%;word-break: break-word">Saturday Cyclic</td>
+                                            {% elseif lockPasscode.passcodeType == 14 %}
+                                                <td style="width: 10%;word-break: break-word">Sunday Cyclic</td>
+                                            {% endif %}
+                                            <form method="post">
+                                            <td style="width: 20%;word-break: break-word">
+                                                {% if jobFeatures[11] == true %}
+                                                <button type="submit" onclick="return confirm('Are you sure you want to delete passcode \''+this.id+'\'');" name="delete" value="{{ lockPasscode.passcodeId }},{{ lockPasscode.lockId }}" class="delete pull-right" id="{{ lockPasscode.passcode }}">Delete</button>
+                                                {% endif %}
+                                                {% if jobFeatures[10] == true %}
+                                                <button style="margin-right: 10px;" class="pull-right"><a href="{{ path('dashboard/manage/passcodes', {'passcodeId': lockPasscode.passcodeId, 'lockId': lockPasscode.lockId, 'passcode': lockPasscode.passcode, 'lock': lockPasscode.lockName}) }}">Edit</a></button></td>
+                                                {% endif %}
+                                            </form>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+
+    <!-- .modal -->
+    <div id="modal" class="modal fade animate black-overlay" data-backdrop="false">
+        <div class="row-col h-v">
+            <div class="row-cell v-m">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content flip-y">
+                        <div class="modal-body text-center">
+                            <p class="p-y m-t"><i class="fa fa-remove text-warning fa-3x"></i></p>
+                            <p>Are you sure to delete your account?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn white p-x-md" data-dismiss="modal">No</button>
+                            <button type="button" class="btn btn-danger p-x-md" data-dismiss="modal">Yes</button>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- / .modal -->
+
+    <!-- ############ PAGE END-->
+
+</div>
+</div>
+</div>
+{{ include('@Brain/Resources/Defaults/FooterIncludes.html.twig') }}
+<script type="text/javascript">
+    $(function () {
+        $('#datetimepicker1').datetimepicker();
+        $('#datetimepicker2').datetimepicker();
+    });
+    function passcodeTypeChange(typeValue) {
+        if (typeValue == 1 || typeValue == 2) {
+            $( "#startTime" ).fadeIn(500);
+            $( "#endTime" ).fadeOut(500);
+        } else {
+            $( "#startTime" ).fadeIn(500);
+            $( "#endTime" ).fadeIn(500);
+        }
+    }
+    function passcodeGenerateChange(generateValue) {
+        if (generateValue == 1) {
+            $( "#passcode" ).fadeOut(500);
+            $( "#passcodeType" ).fadeIn(500);
+        } else {
+            $( "#passcodeType" ).fadeOut(500);
+            $( "#passcode" ).fadeIn(500);
+            $( "#endTime" ).fadeIn(500);
+
+        }
+    }
+    function updateLockList(lockInfoFromLocation) {
+        if (lockInfoFromLocation.options[ lockInfoFromLocation.selectedIndex ].value === '') {
+            document.location.reload();
+        }
+        $('#userJobTitle').empty();
+        $('#userJobTitle').append($('<option/>', {
+            value: '',
+            text : 'Please choose a lock'
+        }));
+
+        JSON.parse(lockInfoFromLocation.options[ lockInfoFromLocation.selectedIndex ].value).forEach(function(element) {
+            $('#userJobTitle').append($('<option/>', {
+                value: element['name'],
+                text : element['name']
+            }));
+        });
+    }
+</script>
+</body>
+</html>
